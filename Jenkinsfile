@@ -3,7 +3,7 @@
 library identifier: 'jenkins-shared-library@main', retriever: modernSCM(
     [$class: 'GitSCMSource',
      remote: 'https://github.com/mukeshkrishna/Jenkins_Shared_Library.git',
-     credentialsId: 'gitlab-credentials'
+     credentialsId: 'github-credentials'
     ]
 )
 
@@ -105,7 +105,7 @@ pipeline {
 		stage('commit version update') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'gitlab-creds', passwordVariable: 'GITPASS', usernameVariable: 'GITUSER')]) {
+                    withCredentials([usernamePassword(credentialsId: 'github-creds', passwordVariable: 'GITPASS', usernameVariable: 'GITUSER')]) {
                         // git config here for the first time run
                         echo "Few information"
                         sh 'git status'
@@ -115,7 +115,7 @@ pipeline {
 
                         sh 'git config --global user.email "jenkins@example.com"'
                         sh 'git config --global user.name "jenkins"'
-                        sh "git remote set-url origin https://${GITUSER}:${GITPASS}@gitlab.com/${GITUSER}/java-maven-app.git"
+                        sh "git remote set-url origin https://${GITUSER}:${GITPASS}@github.com/${GITUSER}/java-maven-app.git"
                         sh 'git add .'
                         sh 'git commit -m "ci: version bump"'
                         sh "git push origin HEAD:jenkins-jobs"
